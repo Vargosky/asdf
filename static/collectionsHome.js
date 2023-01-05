@@ -6,9 +6,9 @@ import { useNFTCollection } from '@thirdweb-dev/react';
 export const collectionData = {
   
 
-  name: 'Certificado de Reciclaje',
-  description:
-    'Bienvenido al Cripto-reciclaje. Para canjear tu certificado, debes adquirir ReLife, llevando a los centros de reciclaje materiales clasificados y pesados. Con esas monedas podrás canjear tu certificado de reciclaje. Baja tu huella de carbono y certifícalo con un NFT validado en la red de Polygon',
+  name: " " ,//'La Revolución del CriptoReciclaje',
+  description: "",
+  description2:  'Unete a una nueva forma de cuidar nuestro ambiente, todos tenemos un lugar en el red de descontaminación de nuestro planeta. Sé un hombre nuevo, te invitamos a ser ',
   isVerified: true,
   banner_image_url: banner,
   image_url: logo,

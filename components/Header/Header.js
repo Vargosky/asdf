@@ -12,8 +12,14 @@ import SearchInput from './SearchInput'
 import NavMenus from './NavMenus'
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
+import dynamic from 'next/dynamic'
 
-const Navbar = () => {
+const MetaBoton = dynamic(() => import('../Auth/MetaBoton.js'), {
+  loading: () => <div>Loading...</div>,
+})
+
+
+const Navbar = ({address,setAddress}) => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -48,19 +54,19 @@ const Navbar = () => {
 
   const menus = [
     {
-      name: 'Explore',
-      href: '#',
+      name: 'Canjea ReLife',
+      href: 'http://ecoinsystem.cl/email/3/',
     },
     {
-      name: 'Stats',
-      href: '#',
+      name: 'Canjea tus Certificados',
+      href: '/market',
     },
     {
-      name: 'Resources',
-      href: '#',
+      name: 'Whitepaper',
+      href: 'https://sarem-vargas.gitbook.io/relife/',
     },
     {
-      name: 'Create',
+      name: 'NFT Especiales',
       href: '#',
     },
   ]
@@ -89,7 +95,7 @@ const Navbar = () => {
       </div>
 
       <div className={style.searchContainer}>
-        <SearchInput />
+       <MetaBoton address={address} setAddress={setAddress}/>
       </div>
 
       <div className={style.menusContainer}>

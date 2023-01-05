@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @layer base {
   html {
     font-family: 'Nunito';
+
   }
 }
+
+@font-face {
+  font-family: "AbrilFatface-Regular";
+  src: local("AbrilFatface-Regular"),
+   url("../components/Fonts/AbrilFatface-Regular.ttf") format("truetype");
+  font-weight: bold;
+  }

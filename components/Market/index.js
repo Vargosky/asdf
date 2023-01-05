@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import dynamic from 'next/dynamic'
+import { collectionData } from '../../static/collections'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useAddress } from '@thirdweb-dev/react'
-import { MdVerified } from 'react-icons/md'
-import TopNavbarLayout from '../../layouts/TopNavbarLayout'
-import CollectionStats from './CollectionStats'
-import { collectionData } from '../../static/collections'
-// import Listings from './Listings'
+
+
+const TopNavbarLayout = dynamic(()=>import('../../layouts/TopNavbarLayout'),{suspense:true});
+const Listings = dynamic(()=>import('./Listings'),{suspense:true});
+//const InfoContract = dynamic(()=>import('../myComponent/infoContract'),{suspense:true});
+
 
 const style = {
   wrapper: `flex flex-col dark:bg-[#202226] relative flex flex-col`,
-  container: `relative flex h-[650px] flex-col`,
+  container: `relative flex h-[450px] flex-col`,
   bannerContainer: `absolute h-1/3 w-full`,
   banner: `rounded-t-lg object-cover`,
   collectionInfoWrapper: `absolute inset-0 top-1/3 z-10 h-2/3 -translate-y-16`,
@@ -26,8 +28,9 @@ const style = {
   descriptionContainer: `max-w-3xl py-2 px-10 text-center text-gray-500`,
 }
 
-export default function Home() {
-  const address = useAddress()
+export default function Home({address,setAddress}) {
+
+
   const [collection] = useState(collectionData)
   const router = useRouter()
   const { slug } = router.query
@@ -39,29 +42,33 @@ export default function Home() {
   useEffect(() => {
     if (!slug) return
     ;(async () => {
-      const collectionData = await getCollection()
+      const collectionData = await getCollection();
 
       setCollection(collectionData)
     })()
   }, [slug])
 
   return (
-    <div>
+    <Suspense fallback={'Loading...'}>
+      
       <TopNavbarLayout>
         <div className={style.wrapper}>
           <div className={style.container}>
             <div className={style.bannerContainer}>
+              <Suspense fallback={'Loading...'}>
               <Image
                 className={style.banner}
                 src={collection?.banner_image_url}
                 layout='fill'
                 alt='banner'
               />
+              </Suspense>
             </div>
 
             <div className={style.collectionInfoWrapper}>
               <div className={style.collectionInfoContainer}>
                 <div className={style.collectionLogoContainer}>
+                <Suspense fallback={'Loading...'}>
                   <Image
                     className={style.collectionLogo}
                     src={collection?.image_url}
@@ -69,6 +76,7 @@ export default function Home() {
                     width={128}
                     alt='logo'
                   />
+                  /</Suspense>
                 </div>
 
                 <div className={style.collectionInfo}>
@@ -76,17 +84,17 @@ export default function Home() {
 
                   <div className={style.creatorInfoContainer}>
                     <div className={style.creator}>
-                      Created by{' '}
+                      Created by{'ReLife'}
                       <span className={style.creatorName}>
                         {collection?.creator}
                       </span>
                     </div>
-                    <MdVerified className={style.verified} />
+
                   </div>
                 </div>
-
-                <CollectionStats stats={collection?.stats} />
-
+                {/* {console.log(collection?.stats)} */}
+                {/* <CollectionStats stats={collection?.stats} /> */}
+                {/* {<InfoContract/>} */}
                 <div className={style.descriptionContainer}>
                   {collection?.description}
                 </div>
@@ -94,9 +102,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* <Listings /> */}
+          <Listings address={address} setAddress={setAddress}/>
         </div>
+
       </TopNavbarLayout>
-    </div>
+      
+    </Suspense>
   )
 }
